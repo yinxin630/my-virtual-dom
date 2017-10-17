@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>my-virtual-dom</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div id="app"></div>
+        <script src="../dist/my-virtual-dom.js"></script>
+        <script>
+            const Element = MyVdom.Element;
+            const diff = MyVdom.diff;
+            const patch = MyVdom.patch;
+
+            const tree = new Element('div', {className: 'div'}, [
+                new Element('h1', {style: 'color: red;'}, ['Hello, This is my vdom library']),
+                new Element('ul', [
+                    new Element('li', ['1111']),
+                    new Element('li', ['2222'])
+                ])
+            ]);
+
+            const $dom = tree.render();
+            console.log(111, $dom);
+            const $app = document.querySelector('#app');
+            $app.replaceWith($dom);
+
+            const newTree = new Element('div', {id: 'div1'}, [
+                new Element('h1', {style: 'color: red;'}, ['Hello, This is my vdom library111']),
+                new Element('p', {style: 'color: blue;'}, ['extra text']),
+                new Element('ul', [
+                    new Element('li', ['1111']),
+                    new Element('li', ['55555']),
+                    new Element('li', ['3333'])
+                ])
+            ]);
+
+            const patches = diff(tree, newTree);
+            console.log(222, patches);
+
+            patch($dom, patches);
+        </script>
+    </body>
+</html>
